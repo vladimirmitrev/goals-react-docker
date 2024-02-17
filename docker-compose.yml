@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+    mongo:
+        container_name: mongodb
+        networks:
+            - goals
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=rootUser
+            - MONGO_INITDB_ROOT_PASSWORD=secret12
+        volumes:
+            - data:/data/db
+        image: mongo
+    goals-backend:
+        container_name: backend
+        networks:
+            - goals
+        ports:
+            - 80:80
+        volumes:
+            - logs:/logs
+            - node_modules:/node_modules
+        image: orion87/goals-backend
+    goals-frontend:
+        container_name: frontend
+        networks:
+            - goals
+        ports:
+            - 3000:3000
+        volumes:
+            - .\frontend\src:/src
+        image: orion87/goals-frontend
+networks:
+    goals:
+volumes:
+    data:
+    logs:
+    node_modules:
